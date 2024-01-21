@@ -35,8 +35,14 @@ const ChatBox = () => {
   // const { myItem, myText } = props;
   const [chat, setChat] = React.useState("");
 
+  const onSubmitForm = (e: React.FormEvent) => {
+    e.preventDefault();
+    expressEmotion(chat);
+    setChat("");
+  };
+
   return (
-    <>
+    <form onSubmit={onSubmitForm}>
       <input
         type="text"
         value={chat}
@@ -44,13 +50,10 @@ const ChatBox = () => {
         className="input"
         onChange={(e) => setChat(e.target.value)}
       />
-      <button
-        className="button button-danger"
-        onClick={() => expressEmotion(chat)}
-      >
+      <button className="button button-danger" type="submit">
         OK
       </button>
-    </>
+    </form>
   );
 };
 
