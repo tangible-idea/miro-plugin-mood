@@ -5,12 +5,16 @@ import "../src/assets/style.css";
 import { Image, Text, Rect } from "@mirohq/websdk-types";
 import { DropCharacters } from "./drop_characters";
 import { moveLeft, moveRight, moveUp, moveDown, jump } from "./action/move";
-import { cameraMoveLeft, cameraMoveRight, cameraMoveUp, cameraMoveDown } from "./action/camera";
+import {
+  cameraMoveLeft,
+  cameraMoveRight,
+  cameraMoveUp,
+  cameraMoveDown,
+} from "./action/camera";
 import ChatBox from "./ChatBox";
 
 export let myItem: Image; // 내 캐릭터
 export let myText: Text; // 내 캐릭터
-let chatContent: string; // 채팅용
 
 // async function getUserName(userId: string) : Promise<string> {
 //   const onlineUsers = await miro.board.getOnlineUsers();
@@ -30,13 +34,15 @@ async function removeCharacter() {
   miro.board.remove(myText);
 }
 
-async function changeYourCharacter(url: string) {
-  myItem.url = url
-  myItem.sync();
-}
+// Change your character's coordinate and image
+// async function changeYourCharacter(newX: number, newY: number, newURL: string) => {
+//   myItem.x= newX;
+//   myItem.y= newY;
+//   myItem.url = url;
+//   myItem.sync();
+// }
 
-async function addCharacter() {
-
+async function addCharacter(characterUrl: string) {
   // retreive my username
   const myName = (await miro.board.getUserInfo()).name;
 
@@ -45,7 +51,7 @@ async function addCharacter() {
 
   myItem = await miro.board.createImage({
     title: myName,
-    url: "https://cdn-icons-png.flaticon.com/512/1727/1727571.png",
+    url: characterUrl,
     width: 250,
   });
 
@@ -71,7 +77,6 @@ async function addCharacter() {
 
 //var myViewport : Rect
 async function setKeyDownEvent() {
-  
   window.addEventListener("keydown", async (e) => {
     var myViewport = await miro.board.viewport.get();
     if (e.key === "ArrowLeft") {
@@ -90,29 +95,25 @@ async function setKeyDownEvent() {
       jump(myItem);
     }
   });
-};
-
-const handleCallback = (parameter : string) => {
-  // Handle the callback logic here
-  console.log('DropCharacters callback executed with parameter:', parameter);
-};
+}
 
 const App: React.FC = () => {
+  const [characterUrl, setCharacterUrl] = React.useState(
+    "https://cdn-icons-png.flaticon.com/512/1727/1727571.png"
+  );
   setKeyDownEvent();
 
-  React.useEffect(() => {
-    //addSticky();
-  }, []);
-
   const onClickAddButton = () => {
-    addCharacter();
+    addCharacter(characterUrl);
   };
 
   return (
     <div className="grid wrapper">
       <div className="cs1 ce12">
-        {/* <img src="/src/assets/mooody.png" alt="" /> */}
-        <DropCharacters/>
+        <DropCharacters
+          characterUrl={characterUrl}
+          setCharacterUrl={setCharacterUrl}
+        />
       </div>
       <div className="cs1 ce12">
         <h1>Congratulations!</h1>

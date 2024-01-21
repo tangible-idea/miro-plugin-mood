@@ -13,7 +13,7 @@ export const addCharacter = async (myItem: Image, myText: Text) => {
 
   myItem = await miro.board.createImage({
     title: myName,
-    url: "https://cdn-icons-png.flaticon.com/512/1727/1727571.png",
+    url: "https://cdn-icons-png.flaticon.com/512/7508/7508360.png",
     width: 250,
   });
 

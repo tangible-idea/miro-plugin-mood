@@ -1,5 +1,5 @@
 import { Image } from "@mirohq/websdk-types";
-const movingUnit = 100;
+const movingUnit = 50;
 const jumpUnit = 50;
 
 const syncCharacter = (myItem: Image) => {
