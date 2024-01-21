@@ -2,9 +2,10 @@ import * as React from "react";
 import { createRoot } from "react-dom/client";
 
 import "../src/assets/style.css";
-import { Image, Text } from "@mirohq/websdk-types";
+import { BoardViewport, Image, Text, Rect } from "@mirohq/websdk-types";
 import { DropCharacters } from "./drop_characters";
 import { moveLeft, moveRight, moveUp, moveDown, jump } from "./action/move";
+import { cameraMoveLeft, cameraMoveRight, cameraMoveUp, cameraMoveDown } from "./action/camera";
 import ChatBox from "./ChatBox";
 
 export let myItem: Image; // 내 캐릭터
@@ -68,16 +69,23 @@ async function addCharacter() {
   //myItem.add(myNameText);
 }
 
-const setKeyDownEvent = () => {
-  window.addEventListener("keydown", (e) => {
+//var myViewport : Rect
+async function setKeyDownEvent() {
+  
+  window.addEventListener("keydown", async (e) => {
+    var myViewport = await miro.board.viewport.get();
     if (e.key === "ArrowLeft") {
       moveLeft(myItem, myText);
+      cameraMoveLeft(myViewport);
     } else if (e.key === "ArrowRight") {
       moveRight(myItem, myText);
+      cameraMoveRight(myViewport);
     } else if (e.key === "ArrowUp") {
       moveUp(myItem, myText);
+      cameraMoveUp(myViewport);
     } else if (e.key === "ArrowDown") {
       moveDown(myItem, myText);
+      cameraMoveDown(myViewport);
     } else if (e.key === " " || e.key === "Spacebar") {
       jump(myItem, myText);
     }
