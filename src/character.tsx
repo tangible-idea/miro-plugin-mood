@@ -1,77 +1,42 @@
+import { Image, Text } from "@mirohq/websdk-types";
 
-import { WidgetMixin, Image, Text, Shape } from '@mirohq/websdk-types';
+export const addCharacter = async (myItem: Image, myText: Text) => {
+  // var myName= await miro.board.getUserInfo()
+  //   .then(res => getUserName(res.id));
 
-export class MyCharacter {
-    constructor() {
-    }
+  // 이름 가져오기
+  const myName = (await miro.board.getUserInfo()).name;
 
-    // character position
-    x= 0;
-    y= 0;
+  // removeCharacter();
+  miro.board.remove(myItem);
+  miro.board.remove(myText);
 
-    // character components
-    characterComponents?: WidgetMixin[]
-    myImage? : Image // 내 캐릭터
-    myText? : Text // 내 캐릭터 
-    myChatBubble? : Shape // 채팅 버블
+  myItem = await miro.board.createImage({
+    title: myName,
+    url: "https://cdn-icons-png.flaticon.com/512/1727/1727571.png",
+    width: 250,
+  });
 
-    // add character component
-    addWidget(element: WidgetMixin) {
-        if(this.characterComponents === undefined) {
-            this.characterComponents= [element];
-            return;
-        }
-        this.characterComponents?.push(element);
-    }
+  // text 생성.
+  myText = await miro.board.createText({
+    content: myName,
+    style: {
+      color: "#1a1a1a", // Default value: #1a1a1a (black)
+      fillColor: "transparent", // Default value: transparent (no fill)
+      fillOpacity: 1, // Default value: 1 (solid color)
+      fontFamily: "arial", // Default font type for the text
+      fontSize: 80, // Default font size
+      textAlign: "center", // Default alignment: left
+    },
+    x: myItem.x,
+    y: myItem.y - 180,
+    width: 200,
+  });
 
+  // grouping
+  //myItem = await miro.board.group({items: [myNameText, characterImage]})
 
-    // need test
-    removeCharacter() {
-        if(this.myImage) miro.board.remove(this.myImage);
-        if(this.myText) miro.board.remove(this.myText);
-        if(this.myChatBubble) miro.board.remove(this.myChatBubble);
-        // this.characterComponents.forEach(element=> {
-        //     miro.board.remove(element as Item);
-        // });
-        // this.characterComponents= [];
-    }
-
-    movingUnit= 10; // character movement unit
-    moveRight() {
-        if(this.myImage) this.myImage.x += this.movingUnit;
-        if(this.myText) this.myText.x += this.movingUnit;
-        if(this.myChatBubble) this.myChatBubble.x += this.movingUnit;
-        // this.characterComponents.map(element => {
-        //     element.x += this.movingUnit;
-        //     element.sync();
-        // });
-    }
-
-    moveLeft() {
-        if(this.myImage) this.myImage.x -= this.movingUnit;
-        if(this.myText) this.myText.x -= this.movingUnit;
-        if(this.myChatBubble) this.myChatBubble.x -= this.movingUnit;
-        // this.characterComponents.forEach(element => {
-        //     element.x -= this.movingUnit;
-        //     element.sync();
-        // });
-    }
-    moveUp() {
-        if(this.myImage) this.myImage.y += this.movingUnit;
-        if(this.myText) this.myText.y += this.movingUnit;
-        if(this.myChatBubble) this.myChatBubble.y += this.movingUnit;
-        // this.characterComponents.forEach(element => {
-        //     element.y += this.movingUnit;
-        //     element.sync();
-        // });
-    }
-    moveDown() {
-        if(this.myImage) this.myImage.y -= this.movingUnit;
-        if(this.myText) this.myText.y -= this.movingUnit;
-        if(this.myChatBubble) this.myChatBubble.y -= this.movingUnit;
-        // this.characterComponents.forEach(element => {
-        //     element.y -= this.movingUnit;
-        //     element.sync();
-        // });
-    }
+  // add to frame
+  //myItem.add(characterImage);
+  //myItem.add(myNameText);
 };
