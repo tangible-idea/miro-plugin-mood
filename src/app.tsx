@@ -2,7 +2,7 @@ import * as React from "react";
 import { createRoot } from "react-dom/client";
 
 import "../src/assets/style.css";
-import { BoardViewport, Image, Text, Rect } from "@mirohq/websdk-types";
+import { Image, Text, Rect } from "@mirohq/websdk-types";
 import { DropCharacters } from "./drop_characters";
 import { moveLeft, moveRight, moveUp, moveDown, jump } from "./action/move";
 import { cameraMoveLeft, cameraMoveRight, cameraMoveUp, cameraMoveDown } from "./action/camera";
@@ -30,13 +30,17 @@ async function removeCharacter() {
   miro.board.remove(myText);
 }
 
-async function addCharacter() {
-  // var myName= await miro.board.getUserInfo()
-  //   .then(res => getUserName(res.id));
+async function changeYourCharacter(url: string) {
+  myItem.url = url
+  myItem.sync();
+}
 
-  // 이름 가져오기
+async function addCharacter() {
+
+  // retreive my username
   const myName = (await miro.board.getUserInfo()).name;
 
+  // remove a old character
   removeCharacter();
 
   myItem = await miro.board.createImage({
@@ -47,26 +51,22 @@ async function addCharacter() {
 
   // text 생성.
   myText = await miro.board.createText({
-    content: myName,
+    content: `${myName} is here!`,
     style: {
       color: "#1a1a1a", // Default value: #1a1a1a (black)
       fillColor: "transparent", // Default value: transparent (no fill)
       fillOpacity: 1, // Default value: 1 (solid color)
       fontFamily: "arial", // Default font type for the text
-      fontSize: 80, // Default font size
+      fontSize: 85, // Default font size
       textAlign: "center", // Default alignment: left
     },
     x: myItem.x,
     y: myItem.y - 180,
-    width: 200,
+    width: 1000,
   });
-
-  // grouping
-  //myItem = await miro.board.group({items: [myNameText, characterImage]})
-
-  // add to frame
-  //myItem.add(characterImage);
-  //myItem.add(myNameText);
+  setTimeout(() => {
+    miro.board.remove(myText);
+  }, 4500);
 }
 
 //var myViewport : Rect
@@ -75,21 +75,26 @@ async function setKeyDownEvent() {
   window.addEventListener("keydown", async (e) => {
     var myViewport = await miro.board.viewport.get();
     if (e.key === "ArrowLeft") {
-      moveLeft(myItem, myText);
+      moveLeft(myItem);
       cameraMoveLeft(myViewport);
     } else if (e.key === "ArrowRight") {
-      moveRight(myItem, myText);
+      moveRight(myItem);
       cameraMoveRight(myViewport);
     } else if (e.key === "ArrowUp") {
-      moveUp(myItem, myText);
+      moveUp(myItem);
       cameraMoveUp(myViewport);
     } else if (e.key === "ArrowDown") {
-      moveDown(myItem, myText);
+      moveDown(myItem);
       cameraMoveDown(myViewport);
     } else if (e.key === " " || e.key === "Spacebar") {
-      jump(myItem, myText);
+      jump(myItem);
     }
   });
+};
+
+const handleCallback = (parameter : string) => {
+  // Handle the callback logic here
+  console.log('DropCharacters callback executed with parameter:', parameter);
 };
 
 const App: React.FC = () => {
@@ -107,7 +112,7 @@ const App: React.FC = () => {
     <div className="grid wrapper">
       <div className="cs1 ce12">
         {/* <img src="/src/assets/mooody.png" alt="" /> */}
-        <DropCharacters />
+        <DropCharacters/>
       </div>
       <div className="cs1 ce12">
         <h1>Congratulations!</h1>
@@ -118,19 +123,6 @@ const App: React.FC = () => {
       </button>
       <div className="cs1 ce12">
         <ChatBox />
-        {/* <input
-          type="text"
-          value={chat}
-          width="100px"
-          className="input"
-          onChange={(e) => setChat(e.target.value)}
-        /> */}
-        {/* <div
-          className="button button-danger"
-          onClick={() => expressEmotion(chat)}
-        >
-          별 뿅
-        </div> */}
       </div>
     </div>
   );

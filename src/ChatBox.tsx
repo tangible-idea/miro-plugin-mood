@@ -26,11 +26,10 @@ const expressEmotion = async (chat: string) => {
   // Output the created item to the developer console
   console.log(chat);
 
-  // await timeout(3000); //for 3 seconds delay
+  // remove after 3 seconds
   setTimeout(() => {
     miro.board.remove(myChatBubble);
   }, 3000);
-  //myCharacter.addWidget(myChatBubble);
 };
 const ChatBox = () => {
   // const { myItem, myText } = props;

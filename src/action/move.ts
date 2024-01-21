@@ -1,43 +1,36 @@
-import { Image, Text } from "@mirohq/websdk-types";
+import { Image } from "@mirohq/websdk-types";
 const movingUnit = 100;
 const jumpUnit = 50;
 
-const syncCharacter = (myItem: Image, myText: Text) => {
-  myText.sync();
+const syncCharacter = (myItem: Image) => {
   myItem.sync();
 };
 
-export const moveLeft = (myItem: Image, myText: Text) => {
-  myText.x -= movingUnit;
+export const moveLeft = (myItem: Image) => {
   myItem.x -= movingUnit;
-  syncCharacter(myItem, myText);
+  syncCharacter(myItem);
 };
 
-export const moveRight = (myItem: Image, myText: Text) => {
-  myText.x += movingUnit;
+export const moveRight = (myItem: Image) => {
   myItem.x += movingUnit;
-  syncCharacter(myItem, myText);
+  syncCharacter(myItem);
 };
 
-export const moveUp = (myItem: Image, myText: Text) => {
-  myText.y -= movingUnit;
+export const moveUp = (myItem: Image) => {
   myItem.y -= movingUnit;
-  syncCharacter(myItem, myText);
+  syncCharacter(myItem);
 };
 
-export const moveDown = (myItem: Image, myText: Text) => {
-  myText.y += movingUnit;
+export const moveDown = (myItem: Image) => {
   myItem.y += movingUnit;
-  syncCharacter(myItem, myText);
+  syncCharacter(myItem);
 };
 
-export const jump = async (myItem: Image, myText: Text) => {
-  myText.y -= jumpUnit;
+export const jump = async (myItem: Image) => {
   myItem.y -= jumpUnit;
-  syncCharacter(myItem, myText);
+  syncCharacter(myItem);
   setTimeout(() => {
-    myText.y += jumpUnit;
     myItem.y += jumpUnit;
-    syncCharacter(myItem, myText);
+    syncCharacter(myItem);
   }, 100);
 };
