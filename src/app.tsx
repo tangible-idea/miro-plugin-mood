@@ -116,10 +116,16 @@ const App: React.FC = () => {
         />
       </div>
       <div className="cs1 ce12">
-        <h1>Congratulations!</h1>
-        <p>Welcome to Moooood</p>
+        <h3>How to use</h3>
+        <ul>
+          <li>Press '+' Button to create your cute character.</li>
+          <li>Move your character by arrow keys </li>
+          <li>Say some messages through input  </li>  
+        </ul>
+        <p><img width="50px" className="explanation" src="https://static.thenounproject.com/png/302301-200.png"/> : Move
+          , <img width="40px" className="explanation" src="https://cdn.iconscout.com/icon/free/png-256/free-enter-key-2190282-1851710.png"/> : Send message</p>
       </div>
-      <button className="button button-danger" onClick={onClickAddButton}>
+      <button className="button button-primary" onClick={onClickAddButton}>
         +
       </button>
       <div className="cs1 ce12">
